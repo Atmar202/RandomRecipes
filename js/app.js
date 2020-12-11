@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(){
     const url = "https://api.spoonacular.com/recipes/random?apiKey=3952edd687804cf59992b211ff4e4788";
-    console.log("test");
+    var i = 0;
 
     fetch(url)
     .then(response =>{
@@ -10,28 +10,47 @@ document.addEventListener("DOMContentLoaded", function(){
         console.log(data.recipes);
         const recipe = data.recipes;
         const length = recipe[0].extendedIngredients.length;
-        //foreach tuleb teha, et lugeda välja kõik massiivid
         const ingredients = recipe[0].extendedIngredients;
 
-        // Muutujad, et lisada kujundus neile
         const title = recipe[0].title;
         const image = recipe[0].image;
         const summary = recipe[0].summary;
         const instructions = recipe[0].instructions;
 
-        console.log(title);
+        let str = '';
+        ingredients.forEach(element => {
+            str += `
+        <div class="border">
+        <p class="title">${recipe[0].extendedIngredients[i].aisle}</p>
+            Amount: ${recipe[0].extendedIngredients[i].amount}
+            <br>
+            Unit: ${recipe[0].extendedIngredients[i].measures.us.unitShort}
+            <br>
+            Measurements: ${recipe[0].extendedIngredients[i].measures.metric.amount} 
+            ${recipe[0].extendedIngredients[i].measures.metric.unitShort}
+        </div>
+            `
+            i++;
+            });
+
         let html = `
-        <img src="${image}">
+        <div class="container">
+        <img src="${image}" id="image">
         <br>
-        Title: ${title}
+        <h2>${title}</h2>
+        <h3>Total Ingredients: ${length}</h3>
+        <h3>Ingredients:</h3> ${str}
         <br>
-        Total Ingredients: ${length}
+        <div class="summary-border">
+        <h1 id="title-1">Summary:</h1>
+        ${summary}
+        </div>
         <br>
-        Ingredients: ${ingredients}
-        <br>
-        Summary: ${summary}
-        <br>
-        Instructions: ${instructions}
+        <div class="instructions-border">
+        <h1 id="title-1">Instructions:</h1>
+        ${instructions}
+        </div>
+        </div>
         `;
         document.body.innerHTML = html;
     })
@@ -42,6 +61,3 @@ document.addEventListener("DOMContentLoaded", function(){
 // image
 // summary
 // instructions
-
-// https://github.com/Atmar202/JavaScript-Sandbox/blob/master/js/app.js
-// Kujundus luua BootStrap'iga
